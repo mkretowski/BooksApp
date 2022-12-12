@@ -14,6 +14,7 @@
 
   const coll = {
     getElements() {
+      console.log(select.templateOf.bookItem);
       const thisColl = this;
       thisColl.favoriteBooks = [];
       thisColl.filters = [];
@@ -60,6 +61,17 @@
         }
       }
     },
+    determineRatingBgc: function (rating) {
+      if (rating < 6) {
+        return 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+      } else if (rating > 6 && rating <= 8) {
+        return 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+      } else if (rating > 8 && rating <= 9) {
+        return 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+      } else {
+        return 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+      }
+    },
     addToFavorites: function (event) {
       const thisColl = this;
       const thisBook = event.target.offsetParent;
@@ -79,7 +91,9 @@
       /* find collection container */
       const collectionContainer = document.querySelector('.books-list');
       for (let bookData of thisColl.data.books) {
-        console.log(bookData);
+        bookData.ratingBgc = thisColl.determineRatingBgc(bookData.rating);
+        bookData.ratingWidth = bookData.rating * 10;
+        //const style = 'style=width:' + ratingWidth + '%; background:' + ratingBgc;
         /* generate HTML based on temlate */
         const generatedHTML = templates.bookItem(bookData);
         /* create element using utils.createElementFromHTML */
